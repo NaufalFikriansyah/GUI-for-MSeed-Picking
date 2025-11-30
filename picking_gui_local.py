@@ -4,7 +4,7 @@ import glob
 import warnings
 import numpy as np
 
-from obspy import read
+from obspy import read, Stream, Trace
 from obspy.core.utcdatetime import UTCDateTime
 
 from PyQt5.QtWidgets import (
@@ -26,7 +26,7 @@ import seisbench.models as sbm
 
 warnings.filterwarnings("ignore", category=UserWarning, module="seisbench")
 
-LOCAL_MSEED_ROOT = r"./20241002010918_-7.35_106.49"
+LOCAL_MSEED_ROOT = "./2017-11-01T05-39-34_-8.168412_107.317574_13.868_4.9" #folder yang mengandung file mseed
 OUTPUT_CSV = "output_pickscoba.csv" #nama output csv
 
 plt.rcParams.update({
@@ -314,8 +314,16 @@ class PickingGUI(QWidget):
 
         st = load_stream_local(fp)
         if st is None:
-            self.canvas.plot_stream(read(fp), ai_time=None, title=f"{os.path.basename(fp)} (stream issue)")
-            self.lbl.setText(f"{self.idx+1}/{len(self.files)} | {fp} (stream issue)")
+            # File tidak bisa dibaca, buat stream kosong untuk ditampilkan sebagai error
+            try:
+                # Coba sekali lagi dengan format eksplisit
+                st = read(fp, format='MSEED')
+            except Exception as e:
+                print(f"[ERR] Cannot read file even with explicit format: {fp} -> {e}")
+                # Buat stream kosong untuk menghindari crash
+                st = Stream()
+            self.canvas.plot_stream(st, ai_time=None, title=f"{os.path.basename(fp)} (stream issue - cannot read file)")
+            self.lbl.setText(f"{self.idx+1}/{len(self.files)} | {fp} (stream issue - cannot read file)")
             self._current_file = fp
             self._current_ai_time = None
             return

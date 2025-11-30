@@ -18,7 +18,7 @@ from matplotlib.backends.backend_qt5agg import (
 from matplotlib.figure import Figure
 
 import matplotlib
-matplotlib.use("Qt5Agg")  # ensure Qt backend
+matplotlib.use("Qt5Agg") 
 import matplotlib.pyplot as plt
 
 import csv
@@ -59,7 +59,7 @@ def load_stream_local(filepath):
         print(f"[WARN] Empty stream: {filepath}")
         return None
 
-    # Require minimum ~30s per trace (common for PhaseNet inputs)
+    # Butuh minimal ~30 detik per trace
     for tr in st:
         dur = tr.stats.npts / tr.stats.sampling_rate
         if dur < 30.0:
@@ -93,7 +93,6 @@ def ai_pick_time_and_prob(st, filepath):
         print("[AI ] No P picks found.")
         return None, None
 
-    # Get times/probs
     times, probs = [], []
     try:
         df = picks.to_dataframe()
@@ -215,7 +214,7 @@ class WaveformCanvas(FigureCanvas):
                 continue
             tr = comp_traces[0]
             t = tr.times("matplotlib")
-            ax.plot_date(t, tr.data, "-", label=tr.id, linewidth=0.8)
+            ax.plot_date(t, tr.data, "-", color="black", label=tr.id, linewidth=0.8)
 
             if self._ai is not None:
                 ax.axvline(self._ai.matplotlib_date, color="red", linestyle="--", label="AI")
@@ -233,7 +232,7 @@ class WaveformCanvas(FigureCanvas):
         self.draw()
 
     def on_click(self, event):
-        # Left click: set manual pick; Right click: clear
+        # click kiri: set manual pick; click kanan: hapus manual pick
         if event.inaxes not in self.axes:
             return
         if self._st is None:

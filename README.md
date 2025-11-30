@@ -11,7 +11,9 @@ Aplikasi ini dirancang untuk:
 - Memungkinkan user melakukan manual picking dengan klik mouse
 - Menyimpan hasil picking (AI dan manual) ke file CSV
 
-image.png
+<img width="1208" height="834" alt="file_2025-11-30_15 18 37" src="https://github.com/user-attachments/assets/113ccf54-8b6d-4905-8896-35b738aec1b9" />
+<img width="1210" height="843" alt="file_2025-11-30_15 19 04" src="https://github.com/user-attachments/assets/c5dece47-29cb-4976-9408-852c0b6f71c3" />
+
 ## Input
 
 ### 1. Folder MiniSEED Files
